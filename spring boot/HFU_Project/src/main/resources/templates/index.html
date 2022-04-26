@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <HEAD>        
+        <title>HFU第三組報告</title>
+        <meta charset="UTF-8"/>
+		<script type="text/javascript" th:src="@{/js/vue.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
+		
+			
+    </HEAD>
+
+	
+    <style>
+
+        html{
+            background-color: rgba(105, 172, 199, 0.685);
+            color:rgb(0, 52, 97) ;
+        }
+
+
+        main.ct{
+            margin-left: 25%;
+            margin-right: 25%;
+            margin-top: 10px;
+
+        }
+       #pct{
+        margin-left: 25%;
+        margin-right: 25%;
+        font-size: 20px;
+        text-align: center;
+        background-color: rgb(235, 246, 255);
+        border-radius: 5px;
+        border-bottom:3px rgb(100, 183, 255) solid;
+        padding:5px 10px 5px 10px;
+        font-weight:bolder;
+       }
+        p{
+          font-size: 20pt;
+			
+        }
+
+        img{
+            height: 200px;
+            width: 200px;
+			padding: 10px;
+        }
+		
+		
+		/*	---------------------------------------------------------------------------------	*/
+	
+		body{
+			font-family: 微軟正黑體;
+
+		}
+		
+		.header{
+	
+			height: 42px;		
+			background: url("images/testt.png") left top repeat-x;
+			
+		}
+		ul{
+			list-style: none;
+			padding: 0;
+		}
+		li{
+			width: 120px;
+			float: right;
+			text-align: center;/*讓字體致中*/
+			line-height: 42px;/*修整高度*/
+		}
+		a{
+			display: block;
+			text-decoration: none;
+			color:#fff;
+			background: url("image/test.png")right top no-repeat;
+		}
+		a:hover{
+			background:url("image/test.png") left bottom no-repeat;
+			
+		}
+		
+		ul ul a{
+			background-color: #464646;
+		}
+		ul ul a :hover{
+			background-color: #312F2F;
+		}
+		ul.nav li ul{
+			display:none;
+		}
+		ul.nav li:hover ul {
+			display:block;
+		}
+		
+    </style>
+    
+    
+	
+    <body >
+		
+		<div class="header" >
+			<ul class="nav">
+		 	<li><a>商品查詢</a>
+			<ul>
+			<li><a href="stop">手機類</a></li>
+			<li><a href="stop">電腦類</a></li>
+			<li><a href="stop">外接零件</a></li>
+			</ul ></li>
+		  	<li><a href="index">回到首頁</a></li>
+
+			</ul>
+		</div>
+		
+		
+        <main id="app" class = "ct">
+			<p>
+				<fieldset v-show="isShow">
+					<legend>{{result.product}}下單資料</legend>
+						<table>
+							<tr>
+								<td>產品名稱</td>
+								<td id="test">{{result.product}}</td>
+							</tr>
+
+							<tr>
+								<td>產品價格</td>
+								<td>{{result.price}}</td>
+							</tr>
+
+							<tr>
+								<td>產品庫存</td>
+								<td>{{result.stockQuantity}}</td>
+							</tr>
+							
+								
+							<tr>
+								<td>購買數量</td>
+								<td>
+									 <input type="text" 
+									  id="purchaseQuantity" 
+									  v-model:values="purchaseQuantity"/>
+								</td>
+							</tr>
+							<tr>
+								<td class="cent">
+									<button v-on:click="check(result.product ,purchaseQuantity , result.stockQuantity , result.price)">確認</button>
+								</td>
+								<td>
+									<button v-on:click="exit">取消</button>
+								</td>
+							</tr>
+						</table>
+					</legend>
+				</fieldset>
+			</p>
+			
+            <table >
+                <tr>
+                    <td>
+                        <img src="image/charger.png" v-on:click="query('行動電源')"/>
+					</td>
+					
+                    <td>
+                        <img src="image/usb.png" v-on:click="query('usb')"/>
+                    </td>
+                    <td>
+						
+                      <img src="image/hard_drive.png" v-on:click="query('外接硬碟')"/>
+                    </td>
+					
+                </tr>
+                <tr>
+                    <td>
+                        <p id="pct"  v-on:click="query('行動電源')">行動電源</p>
+                    </td>
+                    <td>
+                        <p id="pct"  v-on:click="query('USB')">USB</p>
+                    </td>
+                    <td> 
+                        <p id="pct"  v-on:click="query('外接硬碟')">外接硬碟</p>
+                    </td>
+                </tr>
+<!--				-------------------------------------------------------------->
+				<tr>
+                    <td>
+                        <img src="image\earphone.png" v-on:click="query('藍芽耳機')"/>
+					</td>
+					
+                    <td>
+                        <img src="image\mouse.png" v-on:click="query('有線滑鼠')"/>
+                    </td>
+                    <td>
+						
+                      <img src="image\keyboard.png" v-on:click="query('有線鍵盤')"/>
+                    </td>
+					
+                </tr>
+                <tr>
+                    <td>
+                        <p id="pct"  v-on:click="query('藍芽耳機')">藍芽耳機</p>
+                    </td>
+                    <td>
+                        <p id="pct"  v-on:click="query('有線耳機')">有線滑鼠</p>
+                    </td>
+                    <td>
+                        <p id="pct"  v-on:click="query('有線鍵盤')">有線鍵盤</p>
+                    </td>
+                </tr>
+				
+<!--				---------------------------------------------------------------->
+				<tr>
+                    <td>
+                        <img src="image\notebook.png" v-on:click="query('筆記電腦')"/>
+					</td>
+					
+                    <td>
+                        <img src="image\screen.png" v-on:click="query('電腦螢幕')"/>
+                    </td>
+                    <td>
+						
+                      <img src="image\tv.png" v-on:click="query('電視螢幕')"/>
+                    </td>
+					
+                </tr>
+                <tr>
+                    <td>
+                        <p id="pct"  v-on:click="query('筆記電腦')">筆記電腦</p>
+                    </td>
+                    <td>
+                        <p id="pct"  v-on:click="query('電腦螢幕')">電腦螢幕</p>
+                    </td>
+                    <td>
+                        <p id="pct"  v-on:click="query('電視螢幕')">電視螢幕</p>
+                    </td>
+                </tr>
+<!--			-------------------------------------	-->
+				<tr>
+                    <td>
+                        <img src="image\hdmi.png" v-on:click="query('HDMI')"/>
+					</td>
+					
+                    <td>
+                        <img src="image\phone_stand.png" v-on:click="query('手機架')"/>
+                    </td>
+                    <td>
+						
+                      <img src="image\router.png" v-on:click="query('數據機')"/>
+                    </td>
+					
+                </tr>
+                <tr>
+                    <td>
+                        <p id="pct"  v-on:click="query('HDMI')">HDMI線</p>
+                    </td>
+                    <td>
+                        <p id="pct"  v-on:click="query('手機架')">手機架</p>
+                    </td>
+                    <td>
+                        <p id="pct"  v-on:click="query('數據機')">數據機</p>
+                    </td>
+                </tr>
+            </table>
+
+        </main>
+		
+	<script>
+			
+			var app = new Vue(
+			{
+				el:'#app',
+				data:{
+					product: "usb",
+					stockQuantity:"",
+					purchaseQuantity:"1",
+					result:{
+						id:"",
+						product:"",
+						price:"",
+						stockQuantity:"",
+						photoName:"",
+						purchaseQuantity:"",
+				
+					},isShow:false
+					
+					
+				},
+					methods:{
+						query:function(product){
+						var xhr = new XMLHttpRequest();
+						var urlString = '/customer/qrybyid?cid='+product;
+						
+						//高機率
+							
+						xhr.onreadystatechange=function(e){
+							if(xhr.readyState==4 && xhr.status==200){
+								app.isShow = true;
+								
+								app.result=JSON.parse(xhr.responseText);
+								val = product;
+							}else if(xhr.readyState==4 && xhr.status==400){
+								 app.isShow=false;
+                                     var errorObject=JSON.parse(xhr.responseText);
+
+								}
+							}
+//						product = this.product;
+						
+						xhr.open('GET',urlString);
+						xhr.send();
+						
+						},
+						
+						
+//-----------------------------------------------------------------------------------
+								
+						check:function(product ,purchaseQuantity , stockQuantity,price){
+						var user = {};
+						user['productName'] = product;
+						user['purchaseQuantity'] = purchaseQuantity;
+                        
+						if(user['purchaseQuantity'] > 0 & user['purchaseQuantity'] <= 10){
+							if(user['purchaseQuantity'] <= stockQuantity){
+									$.ajax({
+														type:"post",
+														url:"http://localhost:8080/index",
+														dataType:"Json",
+														contentType:"application/json",
+														data:JSON.stringify(user),
+														success:function(user){
+															console.log("OK")
+														},
+													error: function (data) {
+													console.log("error...");
+													console.log(data);
+													}
+
+													})
+													var total = purchaseQuantity * price
+													console.log(total);
+													app.isShow=false
+													alert(user['purchaseQuantity']+"個"+user['productName']+"\n下單成功"+"\n共:"+total+"元")
+
+
+							} else if(user['purchaseQuantity'] > stockQuantity){
+								alert('error:剩餘庫存為'+stockQuantity+'個\n'+'請重新輸入');
+							}
+						}else if(user['purchaseQuantity'] <= 0){
+								 alert('error:產品名稱不可為0')
+								 }
+							else{
+							alert('error:單項產品最多下單10份');
+						}
+				
+//						console.log(data);
+		
+							
+							
+							
+//----------------------------------------------------------------------							
+						}
+						,
+						exit:function(){
+							app.isShow = false;
+						},
+//-------------------------------------------------------------------------
+					/*	
+						jump:function(clasS){
+							
+						}
+						*/
+					}
+			}
+		);
+	
+		</script>
+		
+    </body>
+</html>

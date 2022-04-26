@@ -1,0 +1,48 @@
+<!doctype html>
+<html xmlns:th="http://www.thymaleaf.org">
+<head>
+<meta charset="utf-8">
+<title>無標題文件</title>
+	
+<script type="text/javascript" th:src="@{/js/vue.min.js}"></script>
+		
+</head>
+
+    <body>
+   <fieldset  id="app">
+	   
+	   {{5+2}}
+	   <main th:each="s : ${jumpEntity}">
+			<p>test</p>
+			<p>
+				<strong>product</strong>
+				<span th:text="${s.product}">product</span>
+			</p>
+			<p>
+				<strong>clasS</strong>
+				<span th:text="${s.clasS}">clasS</span>
+			</p>
+		</main>
+	</fieldset>
+		
+</body>
+	
+<script>
+			
+			var app = new Vue(
+			{
+				el:'#app',
+				data:{
+					product: "usb",
+					clasS:"123",
+					result:{
+						product:"",
+						clasS:""
+						
+					}				
+				}	
+			}
+			);
+</script>
+	
+</html>

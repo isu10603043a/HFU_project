@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title th:text="${msg}"></title>
+        <script type="text/javascript" th:src="@{/js/vue.min.js}"></script>
+    </head>
+    <body>
+         <fieldset id="app">
+             {{100*5}}
+             <legend>客戶資料查詢</legend>
+             <div>客戶編號</div>
+             <input type="text" id="customerid" v-model:values="customerid"/>
+             <button v-on:click="query">查詢</button>
+             <div>客戶查詢編號{{customerid}}</div>
+			 
+			 	<p>
+				<fieldset v-show="isShow">
+					<legend>客戶資料</legend>
+						<table>
+							<tr>
+								<td>公司名稱</td>
+								<td>{{result.companyName}}</td>
+							</tr>
+
+							<tr>
+								<td>客戶名稱</td>
+								<td>{{result.customerId}}</td>
+							</tr>
+
+							<tr>
+								<td>客戶電話</td>
+								<td>{{result.phone}}</td>
+							</tr>
+
+							<tr>
+								<td>公司地址</td>
+								<td>{{result.address}}</td>
+							</tr>
+
+							<tr>
+								<td>國家別</td>
+								<td>{{result.country}}</td>
+							</tr>
+						</table>
+					</legend>
+				</fieldset>
+			</p>
+       </fieldset>
+	
+         
+         <script>
+             var app=new Vue(
+                 {
+                     el:'#app',
+                     data:{
+                         customerid:'0001',
+						 message:'',
+						 result:{
+							address: "",
+							country: "",
+							companyName: "",
+							customerId: "",
+							phone: ""
+							 
+						 },
+						 isShow : false
+						 
+                     },
+					 
+					 methods:{
+						query:function(){
+							console.log('我被啟動' );
+							
+						var xhr = new XMLHttpRequest();
+						var urlString = '/customer/qrybyid?cid='+this.customerid;
+						
+						xhr.onreadystatechange=function(e){
+							console.log(xhr.readyState);
+							if(xhr.readyState==4 && xhr.status==200){
+								app.isShow = true;
+								console.log(xhr.responseText);
+								app.result=JSON.parse(xhr.responseText);
+							}else if(xhr.readyState==4 && xhr.status==400){
+								 app.isShow=false;
+                                     var errorObject=JSON.parse(xhr.responseText);
+                                     alert(errorObject.msg);
+								}
+							}
+						xhr.open('GET',urlString);
+						xhr.send();
+						}
+				 	}
+                 }
+             );
+         </script>
+    </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
